@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description"
+    content="Registro de votaciones y asistencia a todos los distintos consejos del Centro de Alumnos de Ingeniería UC.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta property="og:title" content="Consejos Transparentes CAi">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://agucova.github.io/consejos-transparentes-cai/">
+  <meta property="og:image"
+    content="https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Logo_CAi.png/900px-Logo_CAi.png">
+
+  <link rel="manifest" href="site.webmanifest">
+  <link rel="apple-touch-icon" href="icon.png">
+
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/water.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+
+
+  <meta name="theme-color" content="#FAE200">
+</head>
+
+<body>
+
+  <h1>Consejos Transparentes CAi</h1>
+  <h3>Visualizador de Asistencia y Votos</h3>
+  <details open>
+    <summary><b>¿Qué son los consejos?</b></summary>
+    <p>Acorde con los <a href="https://agucova.github.io/Estatutos/estatutos.html">estatutos</a> del Centro de Alumnos de Ingeniería, existen dos instancias representativas aparte del Comite Ejecutivo, el <b>Consejo Generacional</b> y el <b>Consejo Académico.</b></p>
+    <p>El <b>Consejo Generacional</b> es la máxima instancia de representación del CAi, y lo conforman el Comité Generacional (los delegad@s generacionales), el Comité Ejecutivo (la directiva del CAi), el Consejero Académico y el Consejero de Postgrado.</p>
+    <p>Por el otro lado, el <b>Consejo Académico</b> está compuesto por el Comité Académico (delegad@s de majors, departamentos, posgrado y College), el jefe de Docencia y el Jefe de Investigación del Comité ejecutivo, y los miembros de las Consejerías Académicas de Postgrado y Pregrado.</p>
+  </details>
+  <p>Para ver la asistencia y los votos que hicieron tus representantes, <b>elige el tipo de representante:</b></p>
+  <select name='tipo' id='tipo'>
+    <option value='directiva'>Directiva CAi</option>
+    <option value='generacional'>Delegad@s Generacionales</option>
+    <option value='major'>Delegad@s de Major</option>
+    <option value='departamento'>Delegad@s de Departamento</option>
+    <option value='posgrado'>Delegad@s de Posgrado</option>
+  </select>
+  <div id="especificarRol">
+    <p>Ahora elige el {{tipo}} de tu representante:</p>
+    <select name='rol' id='rol'>
+      {{#each roles}}
+      <option value='{{this}}'>{{this}}</option>
+      {{/each}}
+    </select>
+  </div>
+  <script src="js/vendor/modernizr-3.11.2.min.js"></script>
+  <script src="js/plugins.js"></script>
+  <script src="js/main.js"></script>
+
+</body>
+
+</html>
