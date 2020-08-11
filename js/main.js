@@ -80,10 +80,10 @@ function mostrarAsistencia() {
     console.log(datos);
     const tipoRepresentante = document.getElementById("tipo").value;
     try {
-        const rolRepresentante = document.getElementById("rol").value
+        var rolRepresentante = document.getElementById("rol").value;
 
     } catch (TypeError) {
-        const rolRepresentante = "Ingeniería"
+        var rolRepresentante = "Ingeniería";
     }
 
     if (tipoRepresentante == "DG") {
