@@ -4,9 +4,10 @@ document.addEventListener('DOMContentLoaded', init, false);
 function init() {
     var request = new XMLHttpRequest()
     // For localhost development with the API
-    if (document.URL != "http://127.0.0.1:5500/") {
+    if (!document.URL.includes("127.0.0.1:5500")) {
         request.open("GET", "https://cc.agucova.me/consejo/generacional/");
     } else {
+        console.log("Starting in development mode.")
         request.open("GET", "http://127.0.0.1:8000/consejo/generacional/");
     }
 
