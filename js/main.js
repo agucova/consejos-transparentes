@@ -5,10 +5,10 @@ function init() {
     var request = new XMLHttpRequest()
     // For localhost development with the API
     if (!document.URL.includes("127.0.0.1:5500")) {
-        request.open("GET", "https://cc.agucova.me/consejo/generacional/");
+        request.open("GET", "https://cc.agucova.me/rep/generacional/");
     } else {
         console.log("Starting in development mode.")
-        request.open("GET", "http://127.0.0.1:8000/consejo/generacional/");
+        request.open("GET", "http://127.0.0.1:8000/rep/generacional/");
     }
 
     request.onload = function () {
