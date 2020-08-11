@@ -1,21 +1,27 @@
-var request = new XMLHttpRequest()
 
-request.open("GET", "http://127.0.0.1:8000/consejo/generacional/")
-request.onload = function () {
-    var data = JSON.parse(this.response)
+document.addEventListener('DOMContentLoaded', init, false);
 
-    if (request.status >= 200 && request.status < 400) {
-        window.datos = data
-        var selectTipo = document.getElementById("tipo")
-        var selectRol = document.getElementById("rol")
-        selectTipo.addEventListener('change', actualizarRol)
-        selectRol.addEventListener('change', mostrarAsistencia)
-        mostrarAsistencia();
-    } else {
-        console.log('No se pudo contactar la API de Consejos Transparentes.')
+function init() {
+    var request = new XMLHttpRequest()
+    request.open("GET", "https://cc.agucova.me/consejo/generacional/")
+
+
+    request.onload = function () {
+        var data = JSON.parse(this.response)
+        if (request.status >= 200 && request.status < 400) {
+            window.datos = data;
+            var selectTipo = document.getElementById("tipo");
+            var selectRol = document.getElementById("rol");
+
+            actualizarRol();
+
+        } else {
+            console.log('No se pudo contactar la API de Consejos Transparentes.')
+        }
     }
+
+    request.send()
 }
-request.send()
 
 
 function remove_duplicates(arr) {
@@ -30,14 +36,18 @@ function remove_duplicates(arr) {
     return ret_arr;
 }
 
-function actualizarPlantilla(idElemento, datos) {
-    const elemento = document.getElementById(idElemento);
-    const plantilla = Handlebars.compile(elemento.innerHTML);
-    elemento.innerHTML = plantilla(datos);
+function actualizarPlantilla(origenId, salidaId, datos) {
+    const origen = document.getElementById(origenId).innerHTML;
+    var salida = document.getElementById(salidaId);
+
+    // Optimize, compilation should only occur once
+    var plantilla = Handlebars.compile(origen);
+
+    salida.innerHTML = twemoji.parse(plantilla(datos));
+
 }
 
 function actualizarRol() {
-    console.log("actualizarRol");
     const tipoRepresentante = document.getElementById("tipo").value;
     const representantesConTipo = datos.filter(representante => representante.tipo == tipoRepresentante);
     var tipo = null;
@@ -48,25 +58,56 @@ function actualizarRol() {
         // Usar Set deduplica los años
         roles = [...new Set(representantesConTipo.map(representante => representante.representa))];
     }
+    else if (tipoRepresentante == "CT") {
+        tipo: null;
+        roles: null
+    }
 
     datosPlantilla = {
         tipo: tipo,
         roles: roles
     }
 
-    actualizarPlantilla('especificarRol', datosPlantilla);
+    actualizarPlantilla('plantilla-rol', 'especificarRol', datosPlantilla);
     mostrarAsistencia();
 }
 
 function mostrarAsistencia() {
-    console.log("mostrarAsistencia");
+    console.log(datos);
     const tipoRepresentante = document.getElementById("tipo").value;
-    const rolRepresentante = document.getElementById("rol").value;
-    console.log(rolRepresentante);
-    const representantesF = datos.filter(representante => representante.representa == rolRepresentante);
+    try {
+        const rolRepresentante = document.getElementById("rol").value
+
+    } catch (TypeError) {
+        const rolRepresentante = "Ingeniería"
+    }
+
+    if (tipoRepresentante == "DG") {
+        var representantesF = datos.filter(representante => representante.representa == rolRepresentante);
+    }
+    else {
+        var representantesF = datos.filter(representante => representante.tipo == tipoRepresentante);
+    }
+
     console.log(representantesF);
-    representantesF.forEach(representante => function () {
-        console.log(representante.nombre);
-        console.log(representante.asistencias);
-    })
+
+    // Fechas de las sesiones en la que figura el primero, asume que todos en la lista filtrada fueron a los mismos consejos
+    const fechas = representantesF[0].asistencias.map(sesion => sesion.fecha)
+
+    console.log(representantesF);
+
+    representantesP = []
+    for (var representante of representantesF) {
+        // La lista de "presente", "ausente", "con permiso", etc
+        var asistios = representante.asistencias.map(sesion => sesion.asistio.replace("P", "✅").replace("A", "❌").replace("O", "📃").replace("J", "⚖"))
+        // Juntar el nombre con la lista y meter en representantesP
+        representantesP.push([representante.nombre].concat(asistios))
+    }
+
+    const datosPlantilla = {
+        fechas: fechas,
+        asistencias: representantesP
+    }
+
+    actualizarPlantilla("plantilla-asistencia", "asistencia", datosPlantilla);
 }

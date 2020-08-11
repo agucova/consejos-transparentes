@@ -22,6 +22,8 @@
   <link rel="stylesheet" href="css/water.css">
 
   <script src="https://cdn.jsdelivr.net/npm/handlebars@latest/dist/handlebars.js"></script>
+  <script src="https://twemoji.maxcdn.com/v/latest/twemoji.min.js" crossorigin="anonymous"></script>
+
 
 
   <meta name="theme-color" content="#FAE200">
@@ -33,27 +35,63 @@
   <h3>Visualizador de Asistencia y Votos</h3>
   <details open>
     <summary><b>¿Qué son los consejos?</b></summary>
-    <p>Acorde con los <a href="https://agucova.github.io/Estatutos/estatutos.html">estatutos</a> del Centro de Alumnos de Ingeniería, existen dos instancias representativas aparte del Comite Ejecutivo, el <b>Consejo Generacional</b> y el <b>Consejo Académico.</b></p>
-    <p>El <b>Consejo Generacional</b> es la máxima instancia de representación del CAi, y lo conforman el Comité Generacional (los delegad@s generacionales), el Comité Ejecutivo (la directiva del CAi), el Consejero Académico y el Consejero de Postgrado.</p>
-    <p>Por el otro lado, el <b>Consejo Académico</b> está compuesto por el Comité Académico (delegad@s de majors, departamentos, posgrado y College), el jefe de Docencia y el Jefe de Investigación del Comité ejecutivo, y los miembros de las Consejerías Académicas de Postgrado y Pregrado.</p>
+    <p>Acorde con los <a href="https://agucova.github.io/Estatutos/estatutos.html">estatutos</a> del Centro de Alumnos
+      de Ingeniería, existen dos instancias representativas aparte del Comite Ejecutivo, el <b>Consejo Generacional</b>
+      y el <b>Consejo Académico.</b></p>
+    <p>El <b>Consejo Generacional</b> es la máxima instancia de representación del CAi, y lo conforman el Comité
+      Generacional (los delegad@s generacionales), el Comité Ejecutivo (la directiva del CAi), el Consejero Académico y
+      el Consejero de Postgrado.</p>
+    <p>Por el otro lado, el <b>Consejo Académico</b> está compuesto por el Comité Académico (delegad@s de majors,
+      departamentos, posgrado y College), el jefe de Docencia y el Jefe de Investigación del Comité ejecutivo, y los
+      miembros de las Consejerías Académicas de Postgrado y Pregrado.</p>
   </details>
   <p>Para ver la asistencia y los votos que hicieron tus representantes, <b>elige el tipo de representante:</b></p>
-  <select name='tipo' id='tipo'>
+  <select name='tipo' id='tipo' oninput="actualizarRol()">
     <option value='CAI'>Directiva CAi</option>
     <option value='CT'>Consejer@s Territoriales</option>
     <option value='DG'>Delegad@s Generacionales</option>
-    <option value='DM'>Delegad@s de Major</option>
+    <!-- <option value='DM'>Delegad@s de Major</option>
     <option value='DD'>Delegad@s de Departamento</option>
-    <option value='DP'>Delegad@s de Posgrado</option>
+    <option value='DP'>Delegad@s de Posgrado</option> -->
   </select>
   <div id="especificarRol">
+  </div>
+  <div id="asistencia">
+  </div>
+  <script id="plantilla-rol" type="text/x-handlebars-template">
+    {{#if tipo}}
     <p>Ahora elige el {{tipo}} de tu representante:</p>
-    <select name='rol' id='rol'>
+    <select name='rol' id='rol' oninput="mostrarAsistencia()">
       {{#each roles}}
       <option value='{{this}}'>{{this}}</option>
       {{/each}}
     </select>
-  </div>
+    {{/if}}
+  </script>
+  <script id="plantilla-asistencia" type="text/x-handlebars-template">
+    <h3>Asistencia</h3>
+    <table>
+      <thead>
+        <tr>
+          <th><b>Nombre</b></th>
+          {{#each fechas}}
+          <th>{{this}}</th>
+          {{/each}}
+        </tr>
+      </thead>
+      <tbody>
+        {{#each asistencias}}
+        <tr>
+          {{#each this}}
+          <td>{{this}}</td>
+          {{/each}}
+        </tr>
+        {{/each}}
+      </tbody>
+    </table>
+    <hr />
+    <center><p>✅ Presente, ⚖ Justificado, 📃 Dejó poder, ❌ Ausente</p></center>
+  </script>
   <script src="js/vendor/modernizr-3.11.2.min.js"></script>
   <script src="js/plugins.js"></script>
   <script src="js/main.js"></script>
